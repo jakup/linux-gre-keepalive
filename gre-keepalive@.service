@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/gre-keepalive.pl -vf %i
+ExecStart=/usr/local/sbin/gre-keepalive.pl -vf %i
 Restart=always
 RestartSec=5
 
