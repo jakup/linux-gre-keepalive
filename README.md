@@ -24,13 +24,17 @@ This daemon does not initiate keepalive packets, but does look for ones sent by 
 
 1. Install script and systemd unit
 
-    cp gre-keepalive.pl /usr/local/sbin/
-    cp gre-keepalive@.service /usr/lib/systemd/system/
+```
+cp gre-keepalive.pl /usr/local/sbin/
+cp gre-keepalive@.service /usr/lib/systemd/system/
+```
 
 2. Start and enable the service(s)
 
-    systemctl start gre-keepalive@mytunnel1
-    systemctl enable gre-keepalive@mytunnel1
+```
+systemctl start gre-keepalive@mytunnel1
+systemctl enable gre-keepalive@mytunnel1
 
-    systemctl start gre-keepalive@mytunnel2
-    systemctl enable gre-keepalive@mytunnel2
+systemctl start gre-keepalive@mytunnel2
+systemctl enable gre-keepalive@mytunnel2
+```
