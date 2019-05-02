@@ -8,9 +8,15 @@ use Net::Pcap;
 use Socket;
 
 my %opts;
-getopts("hf", \%opts);
+getopts("hvf", \%opts);
 &usage if $opts{"h"};
 my $dev = $ARGV[0] or usage("No device specified");
+my $verbose = $opts{"v"} || 0;
+
+if ($verbose) {
+    $| = 1;
+    print "starting gre-keepalive on device $dev\n";
+}
 
 unless ($opts{"f"}) {
     use Proc::Daemon;
@@ -37,6 +43,7 @@ Net::Pcap::close($pcap);
 sub process_packet {
     my ($socket, $header, $packet) = @_;
 
+    print "process_packet: ", unpack("H*", $packet), "\n" if $verbose;
     # Strip the "cooked capture" header.
     $packet = unpack("x16a*", $packet);
 
@@ -51,6 +58,7 @@ sub usage {
     print <<EOF
 Usage: gre-keepalive.pl [-hf] device
     -h  Show this message then exit.
+    -v  Log incoming packets.
     -f  Run in foreground (don't fork).
 EOF
     ;
