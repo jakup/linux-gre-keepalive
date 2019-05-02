@@ -3,16 +3,23 @@
 use strict;
 use warnings;
 
+use Getopt::Std;
 use Net::Pcap;
-use Proc::Daemon;
 use Socket;
 
-Proc::Daemon::Init;
+my %opts;
+getopts("hf", \%opts);
+&usage if $opts{"h"};
+my $dev = $ARGV[0] or usage("No device specified");
+
+unless ($opts{"f"}) {
+    use Proc::Daemon;
+    Proc::Daemon::Init;
+}
 
 socket(my $socket, AF_INET, SOCK_RAW, 255) || die $!;
 setsockopt($socket, 0, 1, 1);
 
-my $dev = $ARGV[0];
 my $err;
 my $pcap = Net::Pcap::open_live($dev, 1024, 0, 0, \$err);
 
@@ -39,3 +46,13 @@ sub process_packet {
     }
 }
 
+sub usage {
+    print STDERR "Error: $_[0]\n" if @_;
+    print <<EOF
+Usage: gre-keepalive.pl [-hf] device
+    -h  Show this message then exit.
+    -f  Run in foreground (don't fork).
+EOF
+    ;
+    exit 1;
+}

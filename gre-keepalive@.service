@@ -1,0 +1,12 @@
+[Unit]
+Description=GRE Keepalive
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/gre-keepalive.pl -f %i
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

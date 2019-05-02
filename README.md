@@ -19,3 +19,14 @@ ip link set mytunnel up
 
 
 This daemon does not initiate keepalive packets, but does look for ones sent by the originating system and redirects them as a standard Cisco router would, thus causing the GRE tunnel to go up/up, and causing it to go up/down if connectivity is lost. 
+
+Example systemd usage:
+
+cp gre-keepalive@.service /usr/lib/systemd/system/
+cp gre-keepalive.pl /usr/local/sbin/
+
+systemctl start gre-keepalive@mytunnel1
+systemctl enable gre-keepalive@mytunnel1
+
+systemctl start gre-keepalive@mytunnel2
+systemctl enable gre-keepalive@mytunnel2
